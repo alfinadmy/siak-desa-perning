@@ -1,0 +1,49 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+class M_belum_menikah extends CI_Model
+{
+    public function pejabat()
+    {
+        return $this->db->query("SELECT * FROM pejabat")->result();
+    }
+    
+    public function index()
+    {
+        $this->db->from('belum_menikah');
+        $this->db->join('penduduk', 'belum_menikah.nik=penduduk.nik');
+        $this->db->join('pejabat', 'belum_menikah.id_pejabat=pejabat.id_pejabat');
+        return $this->db->get()->result();
+    }
+
+    public function tambah($data)
+    {
+        return $this->db->insert('belum_menikah', $data);
+    }
+
+    public function edit($id)
+    {
+        $this->db->where('id_belum_menikah', $id);
+        return $this->db->get('belum_menikah')->row();
+    }
+
+    public function proses_edit($where, $data)
+    {
+        $this->db->where($where);
+        return $this->db->update('belum_menikah', $data);
+    }
+
+    public function cetak($id)
+    {
+        $this->db->from('belum_menikah');
+        $this->db->where('id_belum_menikah', $id);
+        $this->db->join('penduduk', 'belum_menikah.nik=penduduk.nik');
+        $this->db->join('pejabat', 'belum_menikah.id_pejabat=pejabat.id_pejabat');
+        return $this->db->get()->row();
+    }
+
+    public function hapus($id)
+    {
+        $this->db->where('id_belum_menikah', $id);
+        return $this->db->delete('belum_menikah');
+    }
+}
